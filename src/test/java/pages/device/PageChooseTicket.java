@@ -12,16 +12,19 @@ import tests.TestBase;
 import java.util.List;
 import java.util.Random;
 
+import static utils.TestReport.testReport;
+
 public class PageChooseTicket extends PageBase {
     private AppiumDriver appiumDriver;
 
-    @FindBy(xpath = "//android.support.v7.widget.RecyclerView/android.widget.RelativeLayout")
+    //@FindBy(xpath = "//android.support.v7.widget.RecyclerView/android.widget.RelativeLayout")
+    @FindBy(id = "container")
     List<WebElement> tickets;
 
     @FindBy(id = "total")
     WebElement total;
 
-    @FindBy(id = "rltNext")
+    @FindBy(id = "rpNext")
     WebElement nextBtn;
 
     public PageChooseTicket(AppiumDriver appiumDriver) {
@@ -137,6 +140,10 @@ public class PageChooseTicket extends PageBase {
         return ticketFee;
     }
 
+    private void clickOnPageTitle() {
+        appiumDriver.findElementByXPath("//*[@text='CHOOSE TICKET']").click();
+    }
+
     public void selectRandomTickets() {
 
         int numberOfTicketType, rndTicketTypes, rndTicketIndex, rndNumberTicketToBuy;
@@ -164,9 +171,13 @@ public class PageChooseTicket extends PageBase {
         return false;
     }
 
-    public boolean verifyTotal(Double expectedAmount, Double actualAmount) {
-        if (expectedAmount.equals(actualAmount))
-            return true;
-        return false;
+    public int verifyTotal(Double expectedAmount, Double actualAmount) {
+        int result = expectedAmount.compareTo(actualAmount);
+        String testlog = String.format("Ticket fee expected: %.0f. Actual: %.0f", expectedAmount,  actualAmount);
+        testReport(appiumDriver, result == 0, testlog, true);
+
+        if(result <= 0)
+            return 0;
+        return 1;
     }
 }

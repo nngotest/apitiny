@@ -8,6 +8,8 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import static utils.TestReport.testReport;
+
 public class PageConfirmation extends PageBase {
     private AppiumDriver appiumDriver;
 
@@ -33,9 +35,14 @@ public class PageConfirmation extends PageBase {
         this.backToEventBtn.click();
     }
 
-    public boolean verifyTicketIsBuySuccessfully(){
-        if(!this.transactionCode.getText().equals(""))
-            return true;
-        return false;
+    public int verifyTicketIsBuySuccessfully(){
+        int result = 1;
+        String orderCode = this.transactionCode.getText();
+
+        if(orderCode.equals("") == false)
+            result = 0;
+        testReport(appiumDriver, orderCode.equals(""), String.format("Ticket is bought successfully, transaction code: %s", orderCode),"Unable to buy ticket", true);
+
+        return result;
     }
 }

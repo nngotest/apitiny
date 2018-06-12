@@ -19,7 +19,8 @@ public class TestListener implements ITestListener {
         System.out.println("Start tests");
 
         // create html report
-        if (TestBase.extentTest == null) {
+        //if (TestBase.extentTest == null) {
+        if (TestReport.extentTest == null) {
             String workingDir = System.getProperty("user.dir");
             System.out.println("workingDir" + workingDir);
             extentReports = new ExtentReports(workingDir + "/report/AutomationTestReport.html", true, NetworkMode.OFFLINE);
@@ -31,16 +32,16 @@ public class TestListener implements ITestListener {
 
     public void onTestStart(ITestResult iTestResult) {
         System.out.println("Start test method: " + iTestResult.getName());
-        TestBase.extentTest = extentReports.startTest(iTestResult.getName());
+        TestReport.extentTest = extentReports.startTest(iTestResult.getName());
     }
 
     public void onFinish(ITestContext iTestContext) {
         System.out.println("Finish test");
-        extentReports.endTest(TestBase.extentTest);
+        extentReports.endTest(TestReport.extentTest);
         extentReports.flush();
 
         // stop appium server
-        TestBase.appiumServer.stop();
+        //TestBase.appiumServer.stop();
     }
 
     public void onTestSuccess(ITestResult iTestResult) {
